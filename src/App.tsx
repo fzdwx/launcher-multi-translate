@@ -1,16 +1,16 @@
 import {Command, RaycastLightIcon} from 'launcher-api'
-import React from 'react'
+import React, {useEffect} from 'react'
 import {
     SearchRepositoriesResponse,
     getRepo
 } from './useRepo';
 import {useKeyPress, useRequest} from 'ahooks';
-import {formatDate} from "./date";
-import {catYunTranslate} from "./api/caiyun.ts";
+import {catYunTranslate, depplTranslate} from "./api"
+import {get, set} from "launcher-api/dist/api";
+import {volcengineTranslate} from "./api/volcengine.ts";
 
 const numberFormatter = new Intl.NumberFormat("en-US", {notation: "compact", compactDisplay: "short"});
 const App = () => {
-
     window.focus()
     const inputRef = React.useRef<HTMLInputElement>(null)
     const listRef = React.useRef<HTMLInputElement>(null)
@@ -22,6 +22,16 @@ const App = () => {
         inputRef.current?.focus()
     })
 
+    // useEffect(() => {
+    //     set("123", {
+    //         "hello": "world"
+    //     }).then(res => {
+    //         get("123").then(res => {
+    //             console.log(res)
+    //         })
+    //     })
+    // }, []);
+
     const onValueChange = (v: string) => {
         run(v)
     }
@@ -31,13 +41,13 @@ const App = () => {
     })
 
     catYunTranslate({
-        text: 'hello',
+        text: '我草你妈的',
         from: 'auto',
-        to: 'zh-Hans',
+        to: 'en',
     }).then(res => {
         console.log(res)
-
     })
+
     return (
         <Command className='raycast' shouldFilter={false}>
             <div cmdk-raycast-top-shine=""/>

@@ -25,3 +25,15 @@ type Lang = "auto" |
     "sk" |
     "sl" |
     "sv"
+
+type Query = {
+    text: string
+    from: Lang
+    to: Lang
+}
+
+type TranslateResp = {
+    text: string
+    from: Lang
+    to: Lang
+}

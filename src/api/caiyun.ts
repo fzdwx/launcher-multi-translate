@@ -37,7 +37,7 @@ function init_data(source_lang, target_lang) {
         "detect": true,
         "os_type": "ios",
         "device_id": "F1F902F7-1780-4C88-848D-71F35D88A602",
-        "trans_type": "auto2zh",
+        "trans_type": source_lang + "2" + target_lang,
         "media": "text",
         "request_id": 424238335,
         "user_id": "",
@@ -54,16 +54,9 @@ function supportLanguages() {
     return supportedLanguages.map(([standardLang]) => standardLang);
 }
 
-type Query = {
-    text: string
-    from: Lang
-    to: Lang
-}
-
 async function catYunTranslate(query: Query) {
     const targetLanguage = langMap.get(query.to);
     const sourceLanguage = langMap.get(query.from);
-    console.log(targetLanguage, sourceLanguage)
     const source_lang = sourceLanguage || 'ZH';
     const target_lang = targetLanguage || 'EN';
     const translate_text = query.text || '';
@@ -73,7 +66,7 @@ async function catYunTranslate(query: Query) {
     post_data.source = translate_text
     post_data.request_id = getRandomNumber()
 
-    return await fetch(url, {
+    const resp = await fetch(url, {
         method: "POST",
         url: url,
         headers: {
@@ -83,6 +76,13 @@ async function catYunTranslate(query: Query) {
         },
         body: JSON.stringify(post_data),
     })
+
+    const result = await resp.json()
+    return {
+        text: result.target,
+        from: query.from,
+        to: query.to
+    }
 }
 
 export {catYunTranslate}
