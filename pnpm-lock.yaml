@@ -18,8 +18,8 @@ dependencies:
     specifier: ^2.6.0
     version: 2.6.0(@types/react@18.2.41)(react@18.2.0)
   launcher-api:
-    specifier: ^0.6.19
-    version: 0.6.19(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.6.45
+    version: 0.6.45(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -2655,15 +2655,17 @@ packages:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
     dev: false
 
-  /launcher-api@0.6.19(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-SnzDvdIirxIecq85FgVMpsZ4TQ8ZOZ/xKLGBP4nQ++bqY+aQ/bWYq8OgG69G8gLcxbqxyv8Ph/qQ7Dvp4o5ldA==}
+  /launcher-api@0.6.45(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-sKzvFYQQJ5V0KI0Igbus9Lulu/aCzcqzf7o8p3eDQ81/eIFPRqSOlaBHYDXOEu7ZHU4HdPUB+UbMgsg/7iNadw==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
     dependencies:
       '@radix-ui/react-dialog': 1.0.0(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-popover': 1.0.7(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
+      ahooks: 3.7.8(react@18.2.0)
       jotai: 2.6.0(@types/react@18.2.41)(react@18.2.0)
+      mitt: 3.0.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       sass: 1.69.5
@@ -2756,6 +2758,10 @@ packages:
     dependencies:
       brace-expansion: 1.1.11
     dev: true
+
+  /mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
+    dev: false
 
   /mlly@1.4.2:
     resolution: {integrity: sha512-i/Ykufi2t1EZ6NaPLdfnZk2AX8cs0d+mTzVKuPfqPKPatxLApaBoxJQ9x1/uckXtrS/U5oisPMDkNs0yQTaBRg==}
