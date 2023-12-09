@@ -1,13 +1,13 @@
 import {Command, RaycastLightIcon} from 'launcher-api'
-import React, {useEffect} from 'react'
+import React from 'react'
 import {
-    SearchRepositoriesResponse,
     getRepo
 } from './useRepo';
 import {useKeyPress, useRequest} from 'ahooks';
-import {catYunTranslate, depplTranslate} from "./api"
-import {get, set} from "launcher-api/dist/api";
-import {volcengineTranslate} from "./api/volcengine.ts";
+import translate from 'google-translate-open-api';
+
+import {catYunTranslate} from "./api"
+import {Do, googleTranslate} from "./api/google.ts"
 
 const numberFormatter = new Intl.NumberFormat("en-US", {notation: "compact", compactDisplay: "short"});
 const App = () => {
@@ -20,6 +20,12 @@ const App = () => {
     });
     React.useEffect(() => {
         inputRef.current?.focus()
+    })
+
+    googleTranslate({
+        text: "hello", from: "auto", to: "zh-Hans"
+    }).then(res => {
+        console.log(res)
     })
 
     // useEffect(() => {
@@ -40,13 +46,13 @@ const App = () => {
         window.launcher.loadMainView()
     })
 
-    catYunTranslate({
-        text: '我草你妈的',
-        from: 'auto',
-        to: 'en',
-    }).then(res => {
-        console.log(res)
-    })
+    // catYunTranslate({
+    //     text: '我草你妈的',
+    //     from: 'auto',
+    //     to: 'en',
+    // }).then(res => {
+    //     console.log(res)
+    // })
 
     return (
         <Command className='raycast' shouldFilter={false}>
