@@ -1,3 +1,5 @@
+import {Query, TranslateResp} from "./lang.ts";
+
 const supportedLanguages = [
     ["auto", "auto"],
     ["de", "de"],
@@ -28,6 +30,7 @@ const supportedLanguages = [
     ["sv", "sv"]
 ];
 
+// @ts-ignore
 const langMap = new Map(supportedLanguages);
 const langMapReverse = new Map(supportedLanguages.map(([standardLang, lang]) => [lang, standardLang]));
 
@@ -54,7 +57,7 @@ function supportLanguages() {
     return supportedLanguages.map(([standardLang]) => standardLang);
 }
 
-async function catYunTranslate(query: Query) {
+async function caiYunTranslate(query: Query) {
     const targetLanguage = langMap.get(query.to);
     const sourceLanguage = langMap.get(query.from);
     const source_lang = sourceLanguage || 'ZH';
@@ -68,7 +71,6 @@ async function catYunTranslate(query: Query) {
 
     const resp = await fetch(url, {
         method: "POST",
-        url: url,
         headers: {
             'Content-Type': 'application/json',
             'X-Authorization': 'token ssdj273ksdiwi923bsd9',
@@ -81,8 +83,9 @@ async function catYunTranslate(query: Query) {
     return {
         text: result.target,
         from: query.from,
-        to: query.to
-    }
+        to: query.to,
+        platform: "彩云小译"
+    } as TranslateResp
 }
 
-export {catYunTranslate}
+export {caiYunTranslate}

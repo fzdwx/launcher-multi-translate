@@ -1,67 +1,115 @@
-import {Command, RaycastLightIcon} from 'launcher-api'
-import React from 'react'
-import {
-    getRepo
-} from './useRepo';
-import {useKeyPress, useRequest} from 'ahooks';
-import translate from 'google-translate-open-api';
+import {Command, RaycastLightIcon, useCommandState} from 'launcher-api'
+import React, {useEffect, useState} from 'react'
+import {useInterval, useKeyPress, useRequest} from 'ahooks';
 
-import {catYunTranslate} from "./api"
-import {Do, googleTranslate} from "./api/google.ts"
+import {googleTranslate} from "./api/google.ts"
+import {caiYunTranslate} from "./api";
+import {Platform, Query, TranslateResp} from "./api/lang.ts";
 
-const numberFormatter = new Intl.NumberFormat("en-US", {notation: "compact", compactDisplay: "short"});
+const platforms = [
+    googleTranslate,
+    caiYunTranslate
+]
+
+// hello world
+const TextDiv = ({resp}: { resp: Map<string, TranslateResp> }) => {
+    const current = useCommandState(state => {
+        return resp.get(state.value.toLowerCase())
+    })
+
+    return (
+        <div className='whitespace-pre'>
+            {current?.text}
+        </div>
+    )
+}
+
 const App = () => {
     window.focus()
     const inputRef = React.useRef<HTMLInputElement>(null)
     const listRef = React.useRef<HTMLInputElement>(null)
-    const {data, loading, run} = useRequest(getRepo, {
-        debounceWait: 500,
-        manual: true,
-    });
     React.useEffect(() => {
         inputRef.current?.focus()
     })
-
-    googleTranslate({
-        text: "hello", from: "auto", to: "zh-Hans"
-    }).then(res => {
-        console.log(res)
-    })
-
-    // useEffect(() => {
-    //     set("123", {
-    //         "hello": "world"
-    //     }).then(res => {
-    //         get("123").then(res => {
-    //             console.log(res)
-    //         })
-    //     })
-    // }, []);
-
-    const onValueChange = (v: string) => {
-        run(v)
-    }
-
     useKeyPress('Esc', () => {
         window.launcher.loadMainView()
     })
 
-    // catYunTranslate({
-    //     text: '我草你妈的',
-    //     from: 'auto',
-    //     to: 'en',
-    // }).then(res => {
-    //     console.log(res)
-    // })
+    const [text, setText] = useState('')
+    const [resp, setResp] =
+        useState<Map<string, TranslateResp>>(new Map<string, TranslateResp>())
+
+    const translate = async (text: string) => {
+        if (text == "" || text.length == 0) {
+            return
+        }
+
+        const query = {
+            text: text,
+            from: 'auto',
+            to: 'zh-Hans'
+        } as Query
+
+        for (const f of platforms) {
+            const r = await f(query)
+            const prevResp = resp
+            prevResp.set(r.platform.toLowerCase(), r)
+            setResp(prevResp)
+        }
+    }
+
+
+    const {loading, run} = useRequest(translate, {
+        debounceWait: 500,
+        manual: true,
+    })
+
+    useEffect(() => {
+        run(text)
+    }, [text])
+
+    useInterval(async () => {
+        const newText = await window.launcher.getSelect();
+        if (newText === text) {
+            return
+        }
+
+        setText(newText)
+    }, 100)
+
+
+    const onValueChange = (v: string) => {
+    }
 
     return (
         <Command className='raycast' shouldFilter={false}>
             <div cmdk-raycast-top-shine=""/>
             <Command.Input loading={loading} onValueChange={onValueChange} autoFocus ref={inputRef}/>
 
-            <Command.List ref={listRef}>
-                asdasd
-            </Command.List>
+            <div className="flex">
+                <div className='w-30%'>
+                    <Command.List ref={listRef}>
+                        {
+                            Array.from(resp.values()).map((v, i) => {
+                                return (
+                                    <Command.Item
+                                        key={i}
+                                        data-value={v.platform} onSelect={() => {
+                                        window.launcher.setClipText(v.text)
+                                    }}>
+                                        {v.platform}
+                                    </Command.Item>
+                                )
+                            })
+                        }
+                    </Command.List>
+                </div>
+                <div className='border-r-style-solid border border-gray/60 mt-2 mb-13 mr-2 '/>
+
+                <div>
+                    <TextDiv resp={resp}/>
+                </div>
+            </div>
 
             <div cmdk-raycast-footer="">
                 <RaycastLightIcon/>

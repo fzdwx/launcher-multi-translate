@@ -1,3 +1,5 @@
+import {Query, TranslateResp} from "./lang.ts";
+
 const GoogleHost = 'googleapis.com';
 const supportedLanguages = [
     ["auto", "auto"],
@@ -29,11 +31,13 @@ const supportedLanguages = [
     ["sv", "sv"]
 ];
 
+// @ts-ignore
 const langMap = new Map(supportedLanguages);
 const langMapReverse = new Map(supportedLanguages.map(([standardLang, lang]) => [lang, standardLang]));
+
 export async function googleTranslate(
     query: Query,
-): Promise<string> {
+): Promise<TranslateResp> {
     const urll = `https://translate.${GoogleHost}/translate_a/single`;
     const data = {
         client: 'gtx',
@@ -52,6 +56,7 @@ export async function googleTranslate(
     const parameters = new URLSearchParams();
 
     for (const [key, value] of Object.entries(data)) {
+        // @ts-ignore
         parameters.append(key, value);
     }
 
@@ -109,5 +114,6 @@ export async function googleTranslate(
         text: result.text,
         from: langMapReverse.get(result.from.language.iso),
         to: query.to,
+        platform: "Google"
     } as TranslateResp;
 }

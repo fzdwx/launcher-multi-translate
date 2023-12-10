@@ -8,9 +8,6 @@ dependencies:
   ahooks:
     specifier: ^3.7.8
     version: 3.7.8(react@18.2.0)
-  cmdk:
-    specifier: ^0.2.0
-    version: 0.2.0(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
   javascript-time-ago:
     specifier: ^2.5.9
     version: 2.5.9
@@ -18,8 +15,11 @@ dependencies:
     specifier: ^2.6.0
     version: 2.6.0(@types/react@18.2.41)(react@18.2.0)
   launcher-api:
-    specifier: ^0.7.1
-    version: 0.7.1(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.7.2
+    version: 0.7.2(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
+  lru-cache:
+    specifier: ^10.1.0
+    version: 10.1.0
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -2056,20 +2056,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
 
-  /cmdk@0.2.0(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-JQpKvEOb86SnvMZbYaFKYhvzFntWBeSZdyii0rZPhKJj9uwJBxu4DaVYDrRN7r3mPop56oPhRw+JYWTKs66TYw==}
-    peerDependencies:
-      react: ^18.0.0
-      react-dom: ^18.0.0
-    dependencies:
-      '@radix-ui/react-dialog': 1.0.0(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
-      command-score: 0.1.2
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/react'
-    dev: false
-
   /color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
     dependencies:
@@ -2093,10 +2079,6 @@ packages:
 
   /colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
-    dev: false
-
-  /command-score@0.1.2:
-    resolution: {integrity: sha512-VtDvQpIJBvBatnONUsPzXYFVKQQAhuf3XTNOAsdBxCNO/QCtUUd8LSgjn0GVarBkCad6aJCZfXgrjYbl/KRr7w==}
     dev: false
 
   /concat-map@0.0.1:
@@ -2655,8 +2637,8 @@ packages:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
     dev: false
 
-  /launcher-api@0.7.1(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-O6XrO/2bHcMyyjLtTlOK1BjZWK5nz2MtGfLUDdo/DdVIqk/6W8Z+zqj1IZ0Y3RDj2i1fA+f5bF9zCvy96HrwnA==}
+  /launcher-api@0.7.2(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-wKaeyc62dg+Uq5Y37T6SKZijjQ8kKS4jQ5sEc1HZHlTDtn16/7fetTsNVhKtCMt7KrrBw8O4SMApxx4KbEcviw==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
@@ -2707,6 +2689,11 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+    dev: false
+
+  /lru-cache@10.1.0:
+    resolution: {integrity: sha512-/1clY/ui8CzjKFyjdvwPWJUYKiFVXG2I2cY0ssG7h4+hwk+XOIX7ZSG9Q7TW8TW3Kp3BUSqgFWBLgL4PJ+Blag==}
+    engines: {node: 14 || >=16.14}
     dev: false
 
   /lru-cache@5.1.1:

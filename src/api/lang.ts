@@ -36,4 +36,9 @@ type TranslateResp = {
     text: string
     from: Lang
     to: Lang
+    platform: Platform
 }
+
+type Platform = "彩云小译" | "Google"
+
+export type {Lang, Query, TranslateResp, Platform}
