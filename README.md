@@ -1,20 +1,9 @@
-# launcher extension sample
+# launcher multi translate
 
-It's https://github.com/fzdwx/launcher extension sample
+翻译
 
-### Development:
+![img](.github/img.png)
 
-```shell
-pnpm install
-pnpm update launcher-api
-pnpm run dev
-```
+# todo
 
-1. Use [template](https://github.com/fzdwx/launcher-extension-sample)
-2. Start the launcher after pnpm dev, enter dev and turn on `dev mode` option
-
-### Release:
-
-1. Must submit the `dist` directory
-2. Submit a pr to https://github.com/fzdwx/launcher-extension, in `extensions .json` Add information about your
-   extension
+- [ ] 支持选择语言

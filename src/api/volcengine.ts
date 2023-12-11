@@ -1,3 +1,5 @@
+import {Query} from "./lang.ts";
+
 const supportedLanguages = [
     ["auto", "auto"],
     ["de", "de"],
@@ -27,7 +29,7 @@ const supportedLanguages = [
     ["sl", "sl"],
     ["sv", "sv"]
 ];
-
+//@ts-ignore
 const langMap = new Map(supportedLanguages);
 const langMapReverse = new Map(supportedLanguages.map(([standardLang, lang]) => [lang, standardLang]));
 async function volcengineTranslate(query: Query) {

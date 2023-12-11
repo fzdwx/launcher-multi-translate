@@ -1,10 +1,11 @@
-import { Command, RaycastLightIcon, useCommandState } from 'launcher-api'
-import React, { useEffect, useState } from 'react'
-import { useInterval, useKeyPress, useRequest } from 'ahooks';
+import {Command, RaycastLightIcon, useCommandState} from 'launcher-api'
+import React, {useEffect, useState} from 'react'
+import {useInterval, useKeyPress, useRequest} from 'ahooks';
 
-import { googleTranslate } from "./api/google.ts"
-import { caiYunTranslate } from "./api";
-import { Platform, Query, TranslateResp } from "./api/lang.ts";
+import {googleTranslate} from "./api/google.ts"
+import {caiYunTranslate} from "./api";
+import {Platform, Query, TranslateResp} from "./api/lang.ts";
+import Icon, {getIcon} from "./icon.tsx";
 
 const platforms = [
     googleTranslate,
@@ -12,7 +13,7 @@ const platforms = [
 ]
 
 // hello world
-const TextDiv = ({ resp }: { resp: Map<string, TranslateResp> }) => {
+const TextDiv = ({resp}: { resp: Map<string, TranslateResp> }) => {
     const current = useCommandState(state => {
         if (!state.value) {
             return
@@ -66,7 +67,7 @@ const App = () => {
     }
 
 
-    const { run } = useRequest(translate, {
+    const {run} = useRequest(translate, {
         debounceWait: 500,
         manual: true,
     })
@@ -87,8 +88,8 @@ const App = () => {
 
     return (
         <Command className='raycast' shouldFilter={false}>
-            <div cmdk-raycast-top-shine="" />
-            <Command.Input loading={loading} value={value} autoFocus ref={inputRef} />
+            <div cmdk-raycast-top-shine=""/>
+            <Command.Input loading={loading} value={value} autoFocus ref={inputRef}/>
 
             <div className="flex">
                 <div className='w-30%'>
@@ -99,31 +100,39 @@ const App = () => {
                                     <Command.Item
                                         key={i}
                                         data-value={v.platform} onSelect={() => {
-                                            window.launcher.setClipText(v.text)
-                                        }}>
-                                        {v.platform}
+                                        window.launcher.setClipText(v.text)
+                                    }}>
+                                        <div>
+                                            {getIcon(v.platform)}
+                                        </div>
+
+                                        <div>
+                                            {v.platform}
+                                        </div>
+
                                     </Command.Item>
                                 )
                             })
                         }
                     </Command.List>
                 </div>
-                <div className='border-r-style-solid border mt-2 mr-2  border-gray/25' />
+                <div className='border-r-style-solid border mt-2 mr-2  border-gray/25'/>
 
                 <div className='w-70% max-w-70% min-w-70%'>
-                    <TextDiv resp={resp} />
+                    <TextDiv resp={resp}/>
                 </div>
             </div>
 
             <div cmdk-raycast-footer="">
-                <RaycastLightIcon />
+                <Icon/>
 
                 <button cmdk-raycast-open-trigger="">
-                    Open Application
+                    <span className='pr-1'>Copy to Clipboard</span>
+
                     <kbd>↵</kbd>
                 </button>
 
-                <hr />
+                <hr/>
 
             </div>
         </Command>
