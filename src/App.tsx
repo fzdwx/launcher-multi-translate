@@ -1,10 +1,10 @@
-import {Command, RaycastLightIcon, useCommandState} from 'launcher-api'
-import React, {useEffect, useState} from 'react'
-import {useInterval, useKeyPress, useRequest} from 'ahooks';
+import { Command, RaycastLightIcon, useCommandState } from 'launcher-api'
+import React, { useEffect, useState } from 'react'
+import { useInterval, useKeyPress, useRequest } from 'ahooks';
 
-import {googleTranslate} from "./api/google.ts"
-import {caiYunTranslate} from "./api";
-import {Platform, Query, TranslateResp} from "./api/lang.ts";
+import { googleTranslate } from "./api/google.ts"
+import { caiYunTranslate } from "./api";
+import { Platform, Query, TranslateResp } from "./api/lang.ts";
 
 const platforms = [
     googleTranslate,
@@ -12,13 +12,16 @@ const platforms = [
 ]
 
 // hello world
-const TextDiv = ({resp}: { resp: Map<string, TranslateResp> }) => {
+const TextDiv = ({ resp }: { resp: Map<string, TranslateResp> }) => {
     const current = useCommandState(state => {
+        if (!state.value) {
+            return
+        }
         return resp.get(state.value.toLowerCase())
     })
 
     return (
-        <div className='whitespace-pre'>
+        <div className='whitespace-pre-wrap break-words p-2 m-2'>
             {current?.text}
         </div>
     )
@@ -36,6 +39,8 @@ const App = () => {
     })
 
     const [text, setText] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [value, setValue] = useState('')
     const [resp, setResp] =
         useState<Map<string, TranslateResp>>(new Map<string, TranslateResp>())
 
@@ -50,16 +55,18 @@ const App = () => {
             to: 'zh-Hans'
         } as Query
 
+        setLoading(true)
         for (const f of platforms) {
             const r = await f(query)
             const prevResp = resp
             prevResp.set(r.platform.toLowerCase(), r)
             setResp(prevResp)
         }
+        setLoading(false)
     }
 
 
-    const {loading, run} = useRequest(translate, {
+    const { run } = useRequest(translate, {
         debounceWait: 500,
         manual: true,
     })
@@ -75,16 +82,13 @@ const App = () => {
         }
 
         setText(newText)
+        setValue(newText)
     }, 100)
-
-
-    const onValueChange = (v: string) => {
-    }
 
     return (
         <Command className='raycast' shouldFilter={false}>
-            <div cmdk-raycast-top-shine=""/>
-            <Command.Input loading={loading} onValueChange={onValueChange} autoFocus ref={inputRef}/>
+            <div cmdk-raycast-top-shine="" />
+            <Command.Input loading={loading} value={value} autoFocus ref={inputRef} />
 
             <div className="flex">
                 <div className='w-30%'>
@@ -95,8 +99,8 @@ const App = () => {
                                     <Command.Item
                                         key={i}
                                         data-value={v.platform} onSelect={() => {
-                                        window.launcher.setClipText(v.text)
-                                    }}>
+                                            window.launcher.setClipText(v.text)
+                                        }}>
                                         {v.platform}
                                     </Command.Item>
                                 )
@@ -104,22 +108,22 @@ const App = () => {
                         }
                     </Command.List>
                 </div>
-                <div className='border-r-style-solid border border-gray/60 mt-2 mb-13 mr-2 '/>
+                <div className='border-r-style-solid border mt-2 mr-2  border-gray/25' />
 
-                <div>
-                    <TextDiv resp={resp}/>
+                <div className='w-70% max-w-70% min-w-70%'>
+                    <TextDiv resp={resp} />
                 </div>
             </div>
 
             <div cmdk-raycast-footer="">
-                <RaycastLightIcon/>
+                <RaycastLightIcon />
 
                 <button cmdk-raycast-open-trigger="">
                     Open Application
                     <kbd>↵</kbd>
                 </button>
 
-                <hr/>
+                <hr />
 
             </div>
         </Command>
