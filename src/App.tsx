@@ -23,7 +23,9 @@ const TextDiv = ({resp}: { resp: Map<string, TranslateResp> }) => {
 
     return (
         <div className='whitespace-pre-wrap break-words p-2 m-2'>
-            {current?.text}
+           <span>
+                {current?.text}
+           </span>
         </div>
     )
 }
