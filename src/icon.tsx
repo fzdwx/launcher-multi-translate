@@ -2,8 +2,7 @@
 import Img from '../public/img.png'
 // @ts-ignore
 import Google from '../public/google.svg'
-// @ts-ignore
-import CaiYun from '../public/caiyun.svg'
+import CaiYun from './caiyun.svg'
 import {Platform} from "./api/lang.ts";
 
 const Icon = () => {
