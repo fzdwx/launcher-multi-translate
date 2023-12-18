@@ -4,6 +4,3 @@
 
 ![img](.github/img.png)
 
-# todo
-
-- [ ] 支持选择语言

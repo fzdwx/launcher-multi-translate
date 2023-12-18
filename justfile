@@ -4,6 +4,7 @@ export PATH := "./node_modules/.bin:" + env_var('PATH')
 build:
   rm -rf dist
   pnpm run build
+  git add dist
 
 push: build
     git add .

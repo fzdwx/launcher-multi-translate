@@ -1,18 +1,17 @@
-import {Command, RaycastLightIcon, useCommandState} from 'launcher-api'
+import {Command, useCommandState} from 'launcher-api'
 import React, {useEffect, useState} from 'react'
 import {useInterval, useKeyPress, useRequest} from 'ahooks';
-
 import {googleTranslate} from "./api/google.ts"
 import {caiYunTranslate} from "./api";
-import {Platform, Query, TranslateResp} from "./api/lang.ts";
+import {Query, TranslateResp} from "./api/lang.ts";
 import Icon, {getIcon} from "./icon.tsx";
+import LangSwitch from "./components/LangSwitch.tsx";
 
 const platforms = [
     googleTranslate,
     caiYunTranslate
 ]
 
-// hello world
 const TextDiv = ({resp}: { resp: Map<string, TranslateResp> }) => {
     const current = useCommandState(state => {
         if (!state.value) {
@@ -44,19 +43,17 @@ const App = () => {
     const [text, setText] = useState('')
     const [loading, setLoading] = useState(false)
     const [value, setValue] = useState('')
+    const [from, setFrom] = useState('')
+    const [to, setTo] = useState('')
     const [resp, setResp] =
         useState<Map<string, TranslateResp>>(new Map<string, TranslateResp>())
 
-    const translate = async (text: string) => {
+    const translate = async (text: string, from: string, to: string) => {
         if (text == "" || text.length == 0) {
             return
         }
 
-        const query = {
-            text: text,
-            from: 'auto',
-            to: 'zh-Hans'
-        } as Query
+        const query = {text, from, to} as Query
 
         setLoading(true)
         for (const f of platforms) {
@@ -68,15 +65,14 @@ const App = () => {
         setLoading(false)
     }
 
-
     const {run} = useRequest(translate, {
         debounceWait: 500,
         manual: true,
     })
 
     useEffect(() => {
-        run(text)
-    }, [text])
+        run(text, from, to)
+    }, [text, from, to])
 
     useInterval(async () => {
         const newText = await window.launcher.getSelect();
@@ -91,7 +87,10 @@ const App = () => {
     return (
         <Command className='raycast' shouldFilter={false}>
             <div cmdk-raycast-top-shine=""/>
-            <Command.Input loading={loading} value={value} autoFocus ref={inputRef}/>
+            <div className='flex'>
+                <div className='w-600px'><Command.Input loading={loading} value={value} autoFocus ref={inputRef}/></div>
+                <LangSwitch fromChange={setFrom} toChange={setTo}/>
+            </div>
 
             <div className="flex">
                 <div className='w-30%'>
