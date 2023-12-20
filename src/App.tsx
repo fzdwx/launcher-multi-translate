@@ -42,6 +42,7 @@ const App = () => {
 
     const [text, setText] = useState('')
     const [loading, setLoading] = useState(false)
+    const [shouldListening, setListening] = useState(false)
     const [value, setValue] = useState('')
     const [from, setFrom] = useState('')
     const [to, setTo] = useState('')
@@ -65,6 +66,15 @@ const App = () => {
         setLoading(false)
     }
 
+    const refreshTextFromClip = async () => {
+        const newText = await window.launcher.getSelect();
+        if (newText === text) {
+            return
+        }
+
+        setValue(newText)
+    }
+
     const {run} = useRequest(translate, {
         debounceWait: 500,
         manual: true,
@@ -74,21 +84,35 @@ const App = () => {
         run(text, from, to)
     }, [text, from, to])
 
-    useInterval(async () => {
-        const newText = await window.launcher.getSelect();
-        if (newText === text) {
-            return
-        }
+    useEffect(() => {
+        setText(value)
+    }, [value])
 
-        setText(newText)
-        setValue(newText)
+    useEffect(() => {
+        refreshTextFromClip()
+    }, [])
+
+    useKeyPress("ctrl.l", (e) => {
+        e.preventDefault()
+        setListening(!shouldListening)
+    })
+
+    useInterval(async () => {
+        if (shouldListening) {
+            await refreshTextFromClip();
+        }
     }, 100)
 
     return (
         <Command className='raycast' shouldFilter={false}>
             <div cmdk-raycast-top-shine=""/>
             <div className='flex'>
-                <div className='w-600px'><Command.Input loading={loading} value={value} autoFocus ref={inputRef}/></div>
+                <div className='w-600px'>
+                    <Command.Input loading={loading} value={value} onValueChange={(v)=>{
+                        setValue(v)
+                        setListening(false)
+                    }} autoFocus ref={inputRef}/>
+                </div>
                 <LangSwitch fromChange={setFrom} toChange={setTo}/>
             </div>
 
@@ -101,6 +125,7 @@ const App = () => {
                                     <Command.Item
                                         key={i}
                                         data-value={v.platform} onSelect={() => {
+                                        window.launcher.hide()
                                         window.launcher.setClipText(v.text)
                                     }}>
                                         <div>
@@ -134,6 +159,17 @@ const App = () => {
                 </button>
 
                 <hr/>
+
+                <button cmdk-raycast-open-trigger="" onClick={()=>{
+                    setListening(!shouldListening)
+                }}>
+                    <span className='pr-1'>Listen Mode</span>
+                    <span className='pr-1'>{shouldListening? "ON":"OFF"}</span>
+
+                    <span className='pr-1'><kbd>ctrl</kbd></span>
+
+                    <span><kbd>l</kbd></span>
+                </button>
 
             </div>
         </Command>
