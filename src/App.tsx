@@ -108,12 +108,12 @@ const App = () => {
             <div cmdk-raycast-top-shine=""/>
             <div className='flex'>
                 <div className='w-600px'>
-                    <Command.Input loading={loading} value={value} onValueChange={(v)=>{
+                    <Command.Input loading={loading} value={value} onValueChange={(v) => {
                         setValue(v)
                         setListening(false)
                     }} autoFocus ref={inputRef}/>
                 </div>
-                <LangSwitch fromChange={setFrom} toChange={setTo}/>
+                <LangSwitch value={value} fromChange={setFrom} toChange={setTo}/>
             </div>
 
             <div className="flex">
@@ -160,11 +160,11 @@ const App = () => {
 
                 <hr/>
 
-                <button cmdk-raycast-open-trigger="" onClick={()=>{
+                <button cmdk-raycast-open-trigger="" onClick={() => {
                     setListening(!shouldListening)
                 }}>
                     <span className='pr-1'>Listen Mode</span>
-                    <span className='pr-1'>{shouldListening? "ON":"OFF"}</span>
+                    <span className='pr-1'>{shouldListening ? "ON" : "OFF"}</span>
 
                     <span className='pr-1'><kbd>ctrl</kbd></span>
 
